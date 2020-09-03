@@ -17,21 +17,20 @@ const Sober = (props) => {
 };
 
 const NotSober = (props: IBierStatusProps) => {
-  const statusImage = props.count > props.limit ? img_ko : img_party;
+  const isTooMuch = props.count > props.limit;
+  const statusImage = isTooMuch ? img_ko : img_party;
   return (
     <div>
       <img src={statusImage} alt="nix da" width={200} />
-      <p>Erst {props.count} Bierchen...läuft</p>
+      {!isTooMuch && <p>Erst {props.count} Bierchen...läuft</p>}
     </div>
   );
 };
 
-export const BierStatus = (props: IBierStatusProps) => {
-  return (
-    <div>
-      {(props.count > 0 && <NotSober limit={6} count={props.count} />) || (
-        <Sober />
-      )}
-    </div>
-  );
-};
+export const BierStatus = (props: IBierStatusProps) => (
+  <div>
+    {(props.count > 0 && <NotSober limit={6} count={props.count} />) || (
+      <Sober />
+    )}
+  </div>
+);

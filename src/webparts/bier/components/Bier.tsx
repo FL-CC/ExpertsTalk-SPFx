@@ -16,7 +16,7 @@ export default class Bier extends React.Component<IBierProps, {}> {
               <p className={styles.description}>
                 {escape(this.props.description)}
               </p>
-              <BierStatus count={0} limit={6} />
+              <BierStatus count={6} limit={6} />
             </div>
           </div>
         </div>
