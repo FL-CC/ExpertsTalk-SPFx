@@ -1,29 +1,30 @@
-import * as React from 'react';
-import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
+import * as React from "react";
+import * as ReactDom from "react-dom";
+import { Version } from "@microsoft/sp-core-library";
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+  PropertyPaneTextField,
+  PropertyPaneSlider,
+} from "@microsoft/sp-property-pane";
+import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 
-import * as strings from 'BierWebPartStrings';
-import Bier from './components/Bier';
-import { IBierProps } from './components/IBierProps';
+import * as strings from "BierWebPartStrings";
+import Bier from "./components/Bier";
+import { IBierProps } from "./components/IBierProps";
 
 export interface IBierWebPartProps {
   description: string;
+  limit: number;
 }
 
-export default class BierWebPart extends BaseClientSideWebPart<IBierWebPartProps> {
-
+export default class BierWebPart extends BaseClientSideWebPart<
+  IBierWebPartProps
+> {
   public render(): void {
-    const element: React.ReactElement<IBierProps> = React.createElement(
-      Bier,
-      {
-        description: this.properties.description
-      }
-    );
+    const element: React.ReactElement<IBierProps> = React.createElement(Bier, {
+      description: this.properties.description,
+      limit: this.properties.limit,
+    });
 
     ReactDom.render(element, this.domElement);
   }
@@ -33,7 +34,7 @@ export default class BierWebPart extends BaseClientSideWebPart<IBierWebPartProps
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+    return Version.parse("1.0");
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
@@ -41,20 +42,25 @@ export default class BierWebPart extends BaseClientSideWebPart<IBierWebPartProps
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            description: strings.PropertyPaneDescription,
           },
           groups: [
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
-              ]
-            }
-          ]
-        }
-      ]
+                PropertyPaneTextField("description", {
+                  label: strings.DescriptionFieldLabel,
+                }),
+                PropertyPaneSlider("limit", {
+                  label: "Mein Limit",
+                  min: 0,
+                  max: 20,
+                }),
+              ],
+            },
+          ],
+        },
+      ],
     };
   }
 }
